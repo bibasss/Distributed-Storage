@@ -1,0 +1,9 @@
+$ python s3_client.py demo
+PUT  reports/lab-report-draft.txt          4,400 B      9.6 ms
+HEAD reports/lab-report-draft.txt     metadata={'author': 'student', 'content-kind': 'text', 'course': 'CSS4004', 'lab': '8-9'}
+PUT  datasets/sample_10m.bin          10,485,760 B     68.8 ms
+HEAD datasets/sample_10m.bin          metadata={'course': 'CSS4004', 'md5': '5f673fb7641e2613fed1458a12def296', 'origin': 'os.urandom'}
+LIST bucket root: keys=[] prefixes=['bench/', 'consistency/', 'datasets/', 'reports/', 'test_dir/']
+
+$ python s3_client.py staleness
+{'versions': 200, 'stale_reads': 0, 'max_window_ms': 5.423653994512279, 'median_read_ms': 1.7651150010351557}
