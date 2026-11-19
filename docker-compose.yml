@@ -1,0 +1,71 @@
+# Lab 8-9: HDFS (NameNode + 2 DataNodes) and an S3-compatible object store (MinIO).
+#
+# Services and ports are the ones given in the lab sheet. Additions are marked
+# "added" and explained in README.md ("Deviations from the lab sheet").
+# The top-level `version:` key of the sheet is omitted: Docker Compose v2+
+# ignores it and prints a warning.
+
+services:
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: hdfs_namenode
+    hostname: namenode                       # added: stable name in the Web UI
+    ports:
+      - "9870:9870"                          # Web UI / WebHDFS
+      - "9000:9000"                          # HDFS RPC (fs.defaultFS)
+    environment:
+      - CLUSTER_NAME=test-cluster
+    env_file:
+      - ./hadoop.env
+
+  datanode1:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: hdfs_datanode1
+    hostname: datanode1                      # added
+    environment:
+      - SERVICE_PRECONDITION=namenode:9870
+    env_file:
+      - ./hadoop.env
+
+  datanode2:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: hdfs_datanode2
+    hostname: datanode2                      # added
+    environment:
+      - SERVICE_PRECONDITION=namenode:9870
+    env_file:
+      - ./hadoop.env
+
+  minio:
+    image: minio/minio:latest
+    container_name: local_s3_minio
+    ports:
+      - "9001:9000"                          # S3 API  -> http://localhost:9001
+      - "9002:9001"                          # Console -> http://localhost:9002
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadminpassword
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data                     # added: objects survive container re-creation
+
+  # added: benchmark client inside the compose network. WebHDFS answers a read
+  # with a redirect to the DataNode's container hostname, which only resolves
+  # inside this network, so the HDFS-vs-S3 comparison runs here:
+  #   docker compose run --rm bench
+  bench:
+    build: ./bench
+    profiles: ["tools"]
+    working_dir: /lab
+    volumes:
+      - .:/lab
+    environment:
+      S3_ENDPOINT: http://minio:9000
+      WEBHDFS_URL: http://namenode:9870
+    command: python bench/storage_bench.py
+    depends_on:
+      - namenode
+      - minio
+
+volumes:
+  minio_data:
