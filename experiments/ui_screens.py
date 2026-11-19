@@ -69,26 +69,39 @@ def minio(keys=("datasets/sample_10m.bin", "reports/lab-report-draft.txt"),
     password = os.environ.get("S3_SECRET_KEY", "minioadminpassword")
     with sync_playwright() as p:
         browser = _browser(p)
-        page = browser.new_page(viewport=VIEWPORT)
+        # Tall window: the object details panel scrolls internally, and the
+        # user-metadata block sits below the system attributes.
+        page = browser.new_page(viewport={"width": 1366, "height": 1450})
         page.goto(MINIO_UI)
         page.fill("#accessKey", user)
         page.fill("#secretKey", password)
         page.click("button[type=submit]")
         page.wait_for_url("**/browser**", timeout=20000)
         page.wait_for_timeout(1500)
+        _dismiss_license(page)
         _save(page, "minio_buckets.png")
 
         page.goto(f"{MINIO_UI}/browser/{bucket}")
         page.wait_for_timeout(2500)
+        _dismiss_license(page)
         _save(page, "minio_bucket_root.png")
         for key in keys:
             directory, name = key.rsplit("/", 1)
             page.goto(f"{MINIO_UI}/browser/{bucket}/{directory}/")
             page.wait_for_timeout(2000)
+            _dismiss_license(page)
             page.get_by_text(name, exact=True).first.click()
             page.wait_for_timeout(2000)
             _save(page, f"minio_object_{name.replace('.', '_')}.png")
         browser.close()
+
+
+def _dismiss_license(page):
+    """Community Edition shows an AGPL notice on first use; it blocks clicks."""
+    button = page.get_by_role("button", name="Acknowledge")
+    if button.count() and button.first.is_visible():
+        button.first.click()
+        page.wait_for_timeout(500)
 
 
 if __name__ == "__main__":
