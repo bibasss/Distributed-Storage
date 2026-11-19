@@ -17,7 +17,7 @@ import uuid
 import boto3
 import pytest
 from botocore.client import Config
-from botocore.exceptions import ClientError, EndpointConnectionError
+from botocore.exceptions import BotoCoreError, ClientError, EndpointConnectionError
 
 import s3_client as storage
 
@@ -144,7 +144,7 @@ def test_object_persists_across_minio_restart():
         try:
             storage.s3.head_bucket(Bucket=BUCKET)
             break
-        except (EndpointConnectionError, ClientError, ConnectionError):
+        except (BotoCoreError, ClientError):              # connection refused / closed, 503
             if time.monotonic() > deadline:
                 raise
             time.sleep(0.5)
