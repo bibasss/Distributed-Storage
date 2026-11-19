@@ -1,0 +1,6 @@
+boto3>=1.40
+requests>=2.32
+pytest>=8
+# screenshots / report images only
+playwright>=1.50
+pillow>=10
