@@ -37,7 +37,10 @@ services:
       - ./hadoop.env
 
   minio:
-    image: minio/minio:latest
+    # The sheet's minio/minio image no longer exists (Docker Hub: "repository does
+    # not exist"; quay.io 401; dl.min.io 410). Chainguard's build of the same MinIO
+    # server source, same command / ports / credentials (see README).
+    image: cgr.dev/chainguard/minio:latest
     container_name: local_s3_minio
     ports:
       - "9001:9000"                          # S3 API  -> http://localhost:9001
