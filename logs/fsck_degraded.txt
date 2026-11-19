@@ -1,0 +1,51 @@
+FSCK started by root (auth:SIMPLE) from /172.19.0.3 for path /user/student/data at Thu Nov 19 17:01:22 UTC 2026
+/user/student/data <dir>
+/user/student/data/sample_100m.bin 104857600 bytes, replicated: replication=2, 1 block(s):  Under replicated BP-1362281112-172.19.0.3-1795107496859:blk_1073741836_1012. Target Replicas is 2 but found 1 live replica(s), 0 decommissioned replica(s), 0 decommissioning replica(s).
+0. BP-1362281112-172.19.0.3-1795107496859:blk_1073741836_1012 len=104857600 Live_repl=1  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK]]
+
+/user/student/data/sample_100m_32m-blocks.bin 104857600 bytes, replicated: replication=2, 4 block(s):  Under replicated BP-1362281112-172.19.0.3-1795107496859:blk_1073741837_1013. Target Replicas is 2 but found 1 live replica(s), 0 decommissioned replica(s), 0 decommissioning replica(s).
+ Under replicated BP-1362281112-172.19.0.3-1795107496859:blk_1073741838_1014. Target Replicas is 2 but found 1 live replica(s), 0 decommissioned replica(s), 0 decommissioning replica(s).
+ Under replicated BP-1362281112-172.19.0.3-1795107496859:blk_1073741839_1015. Target Replicas is 2 but found 1 live replica(s), 0 decommissioned replica(s), 0 decommissioning replica(s).
+ Under replicated BP-1362281112-172.19.0.3-1795107496859:blk_1073741840_1016. Target Replicas is 2 but found 1 live replica(s), 0 decommissioned replica(s), 0 decommissioning replica(s).
+0. BP-1362281112-172.19.0.3-1795107496859:blk_1073741837_1013 len=33554432 Live_repl=1  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK]]
+1. BP-1362281112-172.19.0.3-1795107496859:blk_1073741838_1014 len=33554432 Live_repl=1  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK]]
+2. BP-1362281112-172.19.0.3-1795107496859:blk_1073741839_1015 len=33554432 Live_repl=1  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK]]
+3. BP-1362281112-172.19.0.3-1795107496859:blk_1073741840_1016 len=4194304 Live_repl=1  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK]]
+
+
+Status: HEALTHY
+ Number of data-nodes:	1
+ Number of racks:		1
+ Total dirs:			1
+ Total symlinks:		0
+
+Replicated Blocks:
+ Total size:	209715200 B
+ Total files:	2
+ Total blocks (validated):	5 (avg. block size 41943040 B)
+ Minimally replicated blocks:	5 (100.0 %)
+ Over-replicated blocks:	0 (0.0 %)
+ Under-replicated blocks:	5 (100.0 %)
+ Mis-replicated blocks:		0 (0.0 %)
+ Default replication factor:	2
+ Average block replication:	1.0
+ Missing blocks:		0
+ Corrupt blocks:		0
+ Missing replicas:		5 (50.0 %)
+
+Erasure Coded Block Groups:
+ Total size:	0 B
+ Total files:	0
+ Total block groups (validated):	0
+ Minimally erasure-coded block groups:	0
+ Over-erasure-coded block groups:	0
+ Under-erasure-coded block groups:	0
+ Unsatisfactory placement block groups:	0
+ Average block group size:	0.0
+ Missing block groups:		0
+ Corrupt block groups:		0
+ Missing internal blocks:	0
+FSCK ended at Thu Nov 19 17:01:22 UTC 2026 in 1 milliseconds
+
+
+The filesystem under path '/user/student/data' is HEALTHY

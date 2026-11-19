@@ -1,0 +1,36 @@
+[19:59:57 +   0.0s] === phase 0: cluster check
+[19:59:57 +   0.0s] live=2 dead=0 stale=0 blocks=0 under_replicated=0 missing=0 pending_replication=0
+[19:59:57 +   0.0s] === phase 1: write the 100 MB payload (lab sheet commands)
+[20:00:03 +   5.6s] local md5 55633e82bd442eb5f1cb097dc52b4835
+[20:00:05 +   7.9s] === phase 2: block inspection
+[20:00:08 +  10.2s] fsck: 5 blocks, healthy=True
+[20:00:08 +  10.2s] live=2 dead=0 stale=0 blocks=5 under_replicated=0 missing=0 pending_replication=0
+[20:00:11 +  13.8s] === phase 3: fault injection - docker stop hdfs_datanode1
+[20:00:21 +  24.0s] datanode1 stopped
+[20:00:21 +  24.0s] live=2 dead=0 stale=0 blocks=5 under_replicated=0 missing=0 pending_replication=0
+[20:00:31 +  34.0s] live=2 dead=0 stale=0 blocks=5 under_replicated=0 missing=0 pending_replication=0
+[20:00:41 +  44.0s] live=2 dead=0 stale=0 blocks=5 under_replicated=0 missing=0 pending_replication=0
+[20:00:51 +  54.0s] live=2 dead=0 stale=0 blocks=5 under_replicated=0 missing=0 pending_replication=0
+[20:00:53 +  56.1s] live=2 dead=0 stale=1 blocks=5 under_replicated=0 missing=0 pending_replication=0
+[20:01:03 +  66.1s] live=2 dead=0 stale=1 blocks=5 under_replicated=0 missing=0 pending_replication=0
+[20:01:09 +  72.1s] live=1 dead=1 stale=1 blocks=5 under_replicated=0 missing=0 pending_replication=0
+[20:01:19 +  82.1s] live=1 dead=1 stale=0 blocks=5 under_replicated=0 missing=0 pending_replication=0
+[20:01:21 +  84.1s] live=1 dead=1 stale=0 blocks=5 under_replicated=5 missing=0 pending_replication=0
+[20:01:21 +  84.1s] NameNode declared datanode1 dead and flagged blocks under-replicated 60 s after the stop
+[20:01:21 +  84.1s] === phase 4: degraded cluster - reads, writes, no re-replication target
+[20:01:28 +  90.6s] read /user/student/data/sample_100m.bin with 1 live replica: md5 55633e82bd442eb5f1cb097dc52b4835 == original
+[20:01:29 +  91.9s] read /user/student/data/sample_100m_32m-blocks.bin with 1 live replica: md5 55633e82bd442eb5f1cb097dc52b4835 == original
+[20:01:32 +  94.3s] write while degraded succeeded: /user/student/data/written_while_degraded.bin (replication 2)
+[20:01:32 +  94.3s] holding the degraded state for 30 s: with replication 2 and one DataNode left there is no node to re-replicate to
+[20:01:32 +  94.3s] live=1 dead=1 stale=0 blocks=6 under_replicated=5 missing=0 pending_replication=0
+[20:01:42 + 104.3s] live=1 dead=1 stale=0 blocks=6 under_replicated=6 missing=0 pending_replication=0
+[20:01:52 + 114.3s] live=1 dead=1 stale=0 blocks=6 under_replicated=6 missing=0 pending_replication=0
+[20:02:02 + 124.3s] === phase 5: recovery - docker start hdfs_datanode1
+[20:02:02 + 124.5s] live=1 dead=1 stale=0 blocks=6 under_replicated=6 missing=0 pending_replication=0
+[20:02:04 + 126.5s] live=2 dead=0 stale=0 blocks=6 under_replicated=6 missing=0 pending_replication=0
+[20:02:12 + 134.5s] live=2 dead=0 stale=0 blocks=6 under_replicated=0 missing=0 pending_replication=0
+[20:02:12 + 134.5s] recovered: 2 live DataNodes, 0 under-replicated blocks 10 s after the restart
+[20:02:17 + 139.6s] /user/student/data/sample_100m.bin: Live_repl per block = ['2']
+[20:02:18 + 140.8s] /user/student/data/sample_100m_32m-blocks.bin: Live_repl per block = ['2', '2', '2', '2']
+[20:02:19 + 142.0s] /user/student/data/written_while_degraded.bin: Live_repl per block = ['2']
+[20:02:19 + 142.0s] === done

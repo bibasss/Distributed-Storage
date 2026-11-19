@@ -1,0 +1,482 @@
+$ docker exec hdfs_namenode hdfs dfs -rm -r -f -skipTrash /user/student/data
+(exit 0)
+
+$ docker exec hdfs_namenode hdfs dfs -mkdir -p /user/student/data
+(exit 0)
+
+$ docker exec hdfs_namenode dd if=/dev/urandom of=sample_100m.bin bs=1M count=100
+(exit 0)
+
+$ docker exec hdfs_namenode hdfs dfs -put sample_100m.bin /user/student/data/
+(exit 0)
+
+$ docker exec hdfs_namenode hdfs dfs -D dfs.blocksize=33554432 -put sample_100m.bin /user/student/data/sample_100m_32m-blocks.bin
+(exit 0)
+
+$ docker exec hdfs_namenode sh -c md5sum < sample_100m.bin
+55633e82bd442eb5f1cb097dc52b4835  -
+(exit 0)
+
+$ docker exec hdfs_namenode hdfs dfs -ls -h /user/student/data
+Found 2 items
+-rw-r--r--   2 root supergroup      100 M 2026-11-19 17:00 /user/student/data/sample_100m.bin
+-rw-r--r--   2 root supergroup      100 M 2026-11-19 17:00 /user/student/data/sample_100m_32m-blocks.bin
+(exit 0)
+
+$ docker exec hdfs_namenode hdfs dfs -stat %n: replication=%r blocksize=%o size=%b /user/student/data/sample_100m.bin /user/student/data/sample_100m_32m-blocks.bin
+sample_100m.bin: replication=2 blocksize=134217728 size=104857600
+sample_100m_32m-blocks.bin: replication=2 blocksize=33554432 size=104857600
+(exit 0)
+
+$ docker exec hdfs_namenode hdfs fsck /user/student/data -files -blocks -locations
+FSCK started by root (auth:SIMPLE) from /172.19.0.3 for path /user/student/data at Thu Nov 19 17:00:06 UTC 2026
+/user/student/data <dir>
+/user/student/data/sample_100m.bin 104857600 bytes, replicated: replication=2, 1 block(s):  OK
+0. BP-1362281112-172.19.0.3-1795107496859:blk_1073741836_1012 len=104857600 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+
+/user/student/data/sample_100m_32m-blocks.bin 104857600 bytes, replicated: replication=2, 4 block(s):  OK
+0. BP-1362281112-172.19.0.3-1795107496859:blk_1073741837_1013 len=33554432 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+1. BP-1362281112-172.19.0.3-1795107496859:blk_1073741838_1014 len=33554432 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+2. BP-1362281112-172.19.0.3-1795107496859:blk_1073741839_1015 len=33554432 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK], DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK]]
+3. BP-1362281112-172.19.0.3-1795107496859:blk_1073741840_1016 len=4194304 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK], DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK]]
+
+
+Status: HEALTHY
+ Number of data-nodes:	2
+ Number of racks:		1
+ Total dirs:			1
+ Total symlinks:		0
+
+Replicated Blocks:
+ Total size:	209715200 B
+ Total files:	2
+ Total blocks (validated):	5 (avg. block size 41943040 B)
+ Minimally replicated blocks:	5 (100.0 %)
+ Over-replicated blocks:	0 (0.0 %)
+ Under-replicated blocks:	0 (0.0 %)
+ Mis-replicated blocks:		0 (0.0 %)
+ Default replication factor:	2
+ Average block replication:	2.0
+ Missing blocks:		0
+ Corrupt blocks:		0
+ Missing replicas:		0 (0.0 %)
+
+Erasure Coded Block Groups:
+ Total size:	0 B
+ Total files:	0
+ Total block groups (validated):	0
+ Minimally erasure-coded block groups:	0
+ Over-erasure-coded block groups:	0
+ Under-erasure-coded block groups:	0
+ Unsatisfactory placement block groups:	0
+ Average block group size:	0.0
+ Missing block groups:		0
+ Corrupt block groups:		0
+ Missing internal blocks:	0
+FSCK ended at Thu Nov 19 17:00:06 UTC 2026 in 1 milliseconds
+
+
+The filesystem under path '/user/student/data' is HEALTHY
+(exit 0)
+
+$ docker exec hdfs_namenode hdfs dfsadmin -report
+Configured Capacity: 249301401600 (232.18 GB)
+Present Capacity: 64656834630 (60.22 GB)
+DFS Remaining: 64234078208 (59.82 GB)
+DFS Used: 422756422 (403.17 MB)
+DFS Used%: 0.65%
+Replicated Blocks:
+	Under replicated blocks: 0
+	Blocks with corrupt replicas: 0
+	Missing blocks: 0
+	Missing blocks (with replication factor 1): 0
+	Low redundancy blocks with highest priority to recover: 0
+	Pending deletion blocks: 0
+Erasure Coded Block Groups: 
+	Low redundancy block groups: 0
+	Block groups with corrupt internal blocks: 0
+	Missing block groups: 0
+	Low redundancy blocks with highest priority to recover: 0
+	Pending deletion blocks: 0
+
+-------------------------------------------------
+Live datanodes (2):
+
+Name: 172.19.0.2:9866 (hdfs_datanode2.distributed-storage-lab_default)
+Hostname: datanode2
+Decommission Status : Normal
+Configured Capacity: 124650700800 (116.09 GB)
+DFS Used: 211378211 (201.59 MB)
+Non DFS Used: 92305506269 (85.97 GB)
+DFS Remaining: 32117039104 (29.91 GB)
+DFS Used%: 0.17%
+DFS Remaining%: 25.77%
+Configured Cache Capacity: 0 (0 B)
+Cache Used: 0 (0 B)
+Cache Remaining: 0 (0 B)
+Cache Used%: 100.00%
+Cache Remaining%: 0.00%
+Xceivers: 1
+Last contact: Thu Nov 19 17:00:07 UTC 2026
+Last Block Report: Thu Nov 19 16:58:22 UTC 2026
+Num of Blocks: 5
+
+
+Name: 172.19.0.4:9866 (hdfs_datanode1.distributed-storage-lab_default)
+Hostname: datanode1
+Decommission Status : Normal
+Configured Capacity: 124650700800 (116.09 GB)
+DFS Used: 211378211 (201.59 MB)
+Non DFS Used: 92305506269 (85.97 GB)
+DFS Remaining: 32117039104 (29.91 GB)
+DFS Used%: 0.17%
+DFS Remaining%: 25.77%
+Configured Cache Capacity: 0 (0 B)
+Cache Used: 0 (0 B)
+Cache Remaining: 0 (0 B)
+Cache Used%: 100.00%
+Cache Remaining%: 0.00%
+Xceivers: 1
+Last contact: Thu Nov 19 17:00:07 UTC 2026
+Last Block Report: Thu Nov 19 16:58:22 UTC 2026
+Num of Blocks: 5
+
+
+(exit 0)
+
+$ docker stop hdfs_datanode1
+hdfs_datanode1
+(exit 0)
+
+$ docker exec hdfs_namenode hdfs fsck /user/student/data -files -blocks -locations
+FSCK started by root (auth:SIMPLE) from /172.19.0.3 for path /user/student/data at Thu Nov 19 17:01:22 UTC 2026
+/user/student/data <dir>
+/user/student/data/sample_100m.bin 104857600 bytes, replicated: replication=2, 1 block(s):  Under replicated BP-1362281112-172.19.0.3-1795107496859:blk_1073741836_1012. Target Replicas is 2 but found 1 live replica(s), 0 decommissioned replica(s), 0 decommissioning replica(s).
+0. BP-1362281112-172.19.0.3-1795107496859:blk_1073741836_1012 len=104857600 Live_repl=1  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK]]
+
+/user/student/data/sample_100m_32m-blocks.bin 104857600 bytes, replicated: replication=2, 4 block(s):  Under replicated BP-1362281112-172.19.0.3-1795107496859:blk_1073741837_1013. Target Replicas is 2 but found 1 live replica(s), 0 decommissioned replica(s), 0 decommissioning replica(s).
+ Under replicated BP-1362281112-172.19.0.3-1795107496859:blk_1073741838_1014. Target Replicas is 2 but found 1 live replica(s), 0 decommissioned replica(s), 0 decommissioning replica(s).
+ Under replicated BP-1362281112-172.19.0.3-1795107496859:blk_1073741839_1015. Target Replicas is 2 but found 1 live replica(s), 0 decommissioned replica(s), 0 decommissioning replica(s).
+ Under replicated BP-1362281112-172.19.0.3-1795107496859:blk_1073741840_1016. Target Replicas is 2 but found 1 live replica(s), 0 decommissioned replica(s), 0 decommissioning replica(s).
+0. BP-1362281112-172.19.0.3-1795107496859:blk_1073741837_1013 len=33554432 Live_repl=1  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK]]
+1. BP-1362281112-172.19.0.3-1795107496859:blk_1073741838_1014 len=33554432 Live_repl=1  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK]]
+2. BP-1362281112-172.19.0.3-1795107496859:blk_1073741839_1015 len=33554432 Live_repl=1  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK]]
+3. BP-1362281112-172.19.0.3-1795107496859:blk_1073741840_1016 len=4194304 Live_repl=1  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK]]
+
+
+Status: HEALTHY
+ Number of data-nodes:	1
+ Number of racks:		1
+ Total dirs:			1
+ Total symlinks:		0
+
+Replicated Blocks:
+ Total size:	209715200 B
+ Total files:	2
+ Total blocks (validated):	5 (avg. block size 41943040 B)
+ Minimally replicated blocks:	5 (100.0 %)
+ Over-replicated blocks:	0 (0.0 %)
+ Under-replicated blocks:	5 (100.0 %)
+ Mis-replicated blocks:		0 (0.0 %)
+ Default replication factor:	2
+ Average block replication:	1.0
+ Missing blocks:		0
+ Corrupt blocks:		0
+ Missing replicas:		5 (50.0 %)
+
+Erasure Coded Block Groups:
+ Total size:	0 B
+ Total files:	0
+ Total block groups (validated):	0
+ Minimally erasure-coded block groups:	0
+ Over-erasure-coded block groups:	0
+ Under-erasure-coded block groups:	0
+ Unsatisfactory placement block groups:	0
+ Average block group size:	0.0
+ Missing block groups:		0
+ Corrupt block groups:		0
+ Missing internal blocks:	0
+FSCK ended at Thu Nov 19 17:01:22 UTC 2026 in 1 milliseconds
+
+
+The filesystem under path '/user/student/data' is HEALTHY
+(exit 0)
+
+$ docker exec hdfs_namenode hdfs dfsadmin -report
+Configured Capacity: 124650700800 (116.09 GB)
+Present Capacity: 32327946275 (30.11 GB)
+DFS Remaining: 32116568064 (29.91 GB)
+DFS Used: 211378211 (201.59 MB)
+DFS Used%: 0.65%
+Replicated Blocks:
+	Under replicated blocks: 5
+	Blocks with corrupt replicas: 0
+	Missing blocks: 0
+	Missing blocks (with replication factor 1): 0
+	Low redundancy blocks with highest priority to recover: 5
+	Pending deletion blocks: 0
+Erasure Coded Block Groups: 
+	Low redundancy block groups: 0
+	Block groups with corrupt internal blocks: 0
+	Missing block groups: 0
+	Low redundancy blocks with highest priority to recover: 0
+	Pending deletion blocks: 0
+
+-------------------------------------------------
+Live datanodes (1):
+
+Name: 172.19.0.2:9866 (hdfs_datanode2.distributed-storage-lab_default)
+Hostname: datanode2
+Decommission Status : Normal
+Configured Capacity: 124650700800 (116.09 GB)
+DFS Used: 211378211 (201.59 MB)
+Non DFS Used: 92305977309 (85.97 GB)
+DFS Remaining: 32116568064 (29.91 GB)
+DFS Used%: 0.17%
+DFS Remaining%: 25.77%
+Configured Cache Capacity: 0 (0 B)
+Cache Used: 0 (0 B)
+Cache Remaining: 0 (0 B)
+Cache Used%: 100.00%
+Cache Remaining%: 0.00%
+Xceivers: 1
+Last contact: Thu Nov 19 17:01:22 UTC 2026
+Last Block Report: Thu Nov 19 16:58:22 UTC 2026
+Num of Blocks: 5
+
+
+Dead datanodes (1):
+
+Name: 172.19.0.4:9866 (172.19.0.4)
+Hostname: datanode1
+Decommission Status : Normal
+Configured Capacity: 124650700800 (116.09 GB)
+DFS Used: 211378211 (201.59 MB)
+Non DFS Used: 92305907677 (85.97 GB)
+DFS Remaining: 32116637696 (29.91 GB)
+DFS Used%: 0.17%
+DFS Remaining%: 25.77%
+Configured Cache Capacity: 0 (0 B)
+Cache Used: 0 (0 B)
+Cache Remaining: 0 (0 B)
+Cache Used%: 100.00%
+Cache Remaining%: 0.00%
+Xceivers: 0
+Last contact: Thu Nov 19 17:00:19 UTC 2026
+Last Block Report: Thu Nov 19 16:58:22 UTC 2026
+Num of Blocks: 0
+
+
+(exit 0)
+
+$ docker exec hdfs_namenode sh -c hdfs dfs -cat /user/student/data/sample_100m.bin | md5sum
+55633e82bd442eb5f1cb097dc52b4835  -
+(exit 0)
+
+$ docker exec hdfs_namenode sh -c hdfs dfs -cat /user/student/data/sample_100m_32m-blocks.bin | md5sum
+55633e82bd442eb5f1cb097dc52b4835  -
+(exit 0)
+
+$ docker exec hdfs_namenode dd if=/dev/urandom of=degraded.bin bs=1M count=8
+(exit 0)
+
+$ docker exec hdfs_namenode hdfs dfs -put -f degraded.bin /user/student/data/written_while_degraded.bin
+(exit 0)
+
+$ docker exec hdfs_namenode hdfs dfs -stat %r /user/student/data/written_while_degraded.bin
+2
+(exit 0)
+
+$ docker start hdfs_datanode1
+hdfs_datanode1
+(exit 0)
+
+$ docker exec hdfs_namenode hdfs fsck /user/student/data -files -blocks -locations
+FSCK started by root (auth:SIMPLE) from /172.19.0.3 for path /user/student/data at Thu Nov 19 17:02:13 UTC 2026
+/user/student/data <dir>
+/user/student/data/sample_100m.bin 104857600 bytes, replicated: replication=2, 1 block(s):  OK
+0. BP-1362281112-172.19.0.3-1795107496859:blk_1073741836_1012 len=104857600 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+
+/user/student/data/sample_100m_32m-blocks.bin 104857600 bytes, replicated: replication=2, 4 block(s):  OK
+0. BP-1362281112-172.19.0.3-1795107496859:blk_1073741837_1013 len=33554432 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+1. BP-1362281112-172.19.0.3-1795107496859:blk_1073741838_1014 len=33554432 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+2. BP-1362281112-172.19.0.3-1795107496859:blk_1073741839_1015 len=33554432 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+3. BP-1362281112-172.19.0.3-1795107496859:blk_1073741840_1016 len=4194304 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+
+/user/student/data/written_while_degraded.bin 8388608 bytes, replicated: replication=2, 1 block(s):  OK
+0. BP-1362281112-172.19.0.3-1795107496859:blk_1073741841_1017 len=8388608 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+
+
+Status: HEALTHY
+ Number of data-nodes:	2
+ Number of racks:		1
+ Total dirs:			1
+ Total symlinks:		0
+
+Replicated Blocks:
+ Total size:	218103808 B
+ Total files:	3
+ Total blocks (validated):	6 (avg. block size 36350634 B)
+ Minimally replicated blocks:	6 (100.0 %)
+ Over-replicated blocks:	0 (0.0 %)
+ Under-replicated blocks:	0 (0.0 %)
+ Mis-replicated blocks:		0 (0.0 %)
+ Default replication factor:	2
+ Average block replication:	2.0
+ Missing blocks:		0
+ Corrupt blocks:		0
+ Missing replicas:		0 (0.0 %)
+
+Erasure Coded Block Groups:
+ Total size:	0 B
+ Total files:	0
+ Total block groups (validated):	0
+ Minimally erasure-coded block groups:	0
+ Over-erasure-coded block groups:	0
+ Under-erasure-coded block groups:	0
+ Unsatisfactory placement block groups:	0
+ Average block group size:	0.0
+ Missing block groups:		0
+ Corrupt block groups:		0
+ Missing internal blocks:	0
+FSCK ended at Thu Nov 19 17:02:13 UTC 2026 in 1 milliseconds
+
+
+The filesystem under path '/user/student/data' is HEALTHY
+(exit 0)
+
+$ docker exec hdfs_namenode hdfs fsck /user/student/data/sample_100m.bin -files -blocks -locations
+FSCK started by root (auth:SIMPLE) from /172.19.0.3 for path /user/student/data/sample_100m.bin at Thu Nov 19 17:02:16 UTC 2026
+/user/student/data/sample_100m.bin 104857600 bytes, replicated: replication=2, 1 block(s):  OK
+0. BP-1362281112-172.19.0.3-1795107496859:blk_1073741836_1012 len=104857600 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+
+
+Status: HEALTHY
+ Number of data-nodes:	2
+ Number of racks:		1
+ Total dirs:			0
+ Total symlinks:		0
+
+Replicated Blocks:
+ Total size:	104857600 B
+ Total files:	1
+ Total blocks (validated):	1 (avg. block size 104857600 B)
+ Minimally replicated blocks:	1 (100.0 %)
+ Over-replicated blocks:	0 (0.0 %)
+ Under-replicated blocks:	0 (0.0 %)
+ Mis-replicated blocks:		0 (0.0 %)
+ Default replication factor:	2
+ Average block replication:	2.0
+ Missing blocks:		0
+ Corrupt blocks:		0
+ Missing replicas:		0 (0.0 %)
+
+Erasure Coded Block Groups:
+ Total size:	0 B
+ Total files:	0
+ Total block groups (validated):	0
+ Minimally erasure-coded block groups:	0
+ Over-erasure-coded block groups:	0
+ Under-erasure-coded block groups:	0
+ Unsatisfactory placement block groups:	0
+ Average block group size:	0.0
+ Missing block groups:		0
+ Corrupt block groups:		0
+ Missing internal blocks:	0
+FSCK ended at Thu Nov 19 17:02:16 UTC 2026 in 1 milliseconds
+
+
+The filesystem under path '/user/student/data/sample_100m.bin' is HEALTHY
+(exit 0)
+
+$ docker exec hdfs_namenode hdfs fsck /user/student/data/sample_100m_32m-blocks.bin -files -blocks -locations
+FSCK started by root (auth:SIMPLE) from /172.19.0.3 for path /user/student/data/sample_100m_32m-blocks.bin at Thu Nov 19 17:02:18 UTC 2026
+/user/student/data/sample_100m_32m-blocks.bin 104857600 bytes, replicated: replication=2, 4 block(s):  OK
+0. BP-1362281112-172.19.0.3-1795107496859:blk_1073741837_1013 len=33554432 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+1. BP-1362281112-172.19.0.3-1795107496859:blk_1073741838_1014 len=33554432 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+2. BP-1362281112-172.19.0.3-1795107496859:blk_1073741839_1015 len=33554432 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+3. BP-1362281112-172.19.0.3-1795107496859:blk_1073741840_1016 len=4194304 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+
+
+Status: HEALTHY
+ Number of data-nodes:	2
+ Number of racks:		1
+ Total dirs:			0
+ Total symlinks:		0
+
+Replicated Blocks:
+ Total size:	104857600 B
+ Total files:	1
+ Total blocks (validated):	4 (avg. block size 26214400 B)
+ Minimally replicated blocks:	4 (100.0 %)
+ Over-replicated blocks:	0 (0.0 %)
+ Under-replicated blocks:	0 (0.0 %)
+ Mis-replicated blocks:		0 (0.0 %)
+ Default replication factor:	2
+ Average block replication:	2.0
+ Missing blocks:		0
+ Corrupt blocks:		0
+ Missing replicas:		0 (0.0 %)
+
+Erasure Coded Block Groups:
+ Total size:	0 B
+ Total files:	0
+ Total block groups (validated):	0
+ Minimally erasure-coded block groups:	0
+ Over-erasure-coded block groups:	0
+ Under-erasure-coded block groups:	0
+ Unsatisfactory placement block groups:	0
+ Average block group size:	0.0
+ Missing block groups:		0
+ Corrupt block groups:		0
+ Missing internal blocks:	0
+FSCK ended at Thu Nov 19 17:02:18 UTC 2026 in 1 milliseconds
+
+
+The filesystem under path '/user/student/data/sample_100m_32m-blocks.bin' is HEALTHY
+(exit 0)
+
+$ docker exec hdfs_namenode hdfs fsck /user/student/data/written_while_degraded.bin -files -blocks -locations
+FSCK started by root (auth:SIMPLE) from /172.19.0.3 for path /user/student/data/written_while_degraded.bin at Thu Nov 19 17:02:19 UTC 2026
+/user/student/data/written_while_degraded.bin 8388608 bytes, replicated: replication=2, 1 block(s):  OK
+0. BP-1362281112-172.19.0.3-1795107496859:blk_1073741841_1017 len=8388608 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+
+
+Status: HEALTHY
+ Number of data-nodes:	2
+ Number of racks:		1
+ Total dirs:			0
+ Total symlinks:		0
+
+Replicated Blocks:
+ Total size:	8388608 B
+ Total files:	1
+ Total blocks (validated):	1 (avg. block size 8388608 B)
+ Minimally replicated blocks:	1 (100.0 %)
+ Over-replicated blocks:	0 (0.0 %)
+ Under-replicated blocks:	0 (0.0 %)
+ Mis-replicated blocks:		0 (0.0 %)
+ Default replication factor:	2
+ Average block replication:	2.0
+ Missing blocks:		0
+ Corrupt blocks:		0
+ Missing replicas:		0 (0.0 %)
+
+Erasure Coded Block Groups:
+ Total size:	0 B
+ Total files:	0
+ Total block groups (validated):	0
+ Minimally erasure-coded block groups:	0
+ Over-erasure-coded block groups:	0
+ Under-erasure-coded block groups:	0
+ Unsatisfactory placement block groups:	0
+ Average block group size:	0.0
+ Missing block groups:		0
+ Corrupt block groups:		0
+ Missing internal blocks:	0
+FSCK ended at Thu Nov 19 17:02:19 UTC 2026 in 1 milliseconds
+
+
+The filesystem under path '/user/student/data/written_while_degraded.bin' is HEALTHY
+(exit 0)
+

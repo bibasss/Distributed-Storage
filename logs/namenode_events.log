@@ -1,0 +1,43 @@
+ - Setting dfs.heartbeat.interval=3
+ - Setting dfs.namenode.heartbeat.recheck-interval=10000
+2026-11-19 16:58:16,773 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 16:58:16,773 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 16:58:16,781 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 16:58:16,781 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 16:58:16,783 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 16:58:17,684 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 16:58:17,684 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 16:58:17,691 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 16:58:17,691 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 16:58:17,694 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 16:58:17,822 INFO namenode.FSNamesystem: Need to save fs image? false (staleImage=false, haEnabled=false, isRollingUpgrade=false)
+2026-11-19 16:58:18,056 INFO hdfs.StateChange: STATE* UnderReplicatedBlocks has 0 blocks
+2026-11-19 16:58:22,360 INFO hdfs.StateChange: BLOCK* registerDatanode: from DatanodeRegistration(172.19.0.2:9866, datanodeUuid=698d06cb-42b6-483e-b8a7-98ebfe15966c, infoPort=9864, infoSecurePort=0, ipcPort=9867, storageInfo=lv=-57;cid=CID-bdb7ecc5-603a-4200-8927-38e993fada13;nsid=98127226;c=1795107496859) storage 698d06cb-42b6-483e-b8a7-98ebfe15966c
+2026-11-19 16:58:22,361 INFO blockmanagement.BlockReportLeaseManager: Registered DN 698d06cb-42b6-483e-b8a7-98ebfe15966c (172.19.0.2:9866).
+2026-11-19 16:58:22,421 INFO BlockStateChange: BLOCK* processReport 0xc7c242d564029c08: Processing first storage report for DS-ebb3ed0a-793b-4200-8818-12b33a12abd7 from datanode 698d06cb-42b6-483e-b8a7-98ebfe15966c
+2026-11-19 16:58:22,480 INFO BlockStateChange: BLOCK* processReport 0xc7c242d564029c08: from storage DS-ebb3ed0a-793b-4200-8818-12b33a12abd7 node DatanodeRegistration(172.19.0.2:9866, datanodeUuid=698d06cb-42b6-483e-b8a7-98ebfe15966c, infoPort=9864, infoSecurePort=0, ipcPort=9867, storageInfo=lv=-57;cid=CID-bdb7ecc5-603a-4200-8927-38e993fada13;nsid=98127226;c=1795107496859), blocks: 0, hasStaleStorage: false, processing time: 59 msecs, invalidatedBlocks: 0
+2026-11-19 16:58:22,481 INFO hdfs.StateChange: BLOCK* registerDatanode: from DatanodeRegistration(172.19.0.4:9866, datanodeUuid=b7115def-0c1b-44d0-8c77-015e83d677ff, infoPort=9864, infoSecurePort=0, ipcPort=9867, storageInfo=lv=-57;cid=CID-bdb7ecc5-603a-4200-8927-38e993fada13;nsid=98127226;c=1795107496859) storage b7115def-0c1b-44d0-8c77-015e83d677ff
+2026-11-19 16:58:22,481 INFO blockmanagement.BlockReportLeaseManager: Registered DN b7115def-0c1b-44d0-8c77-015e83d677ff (172.19.0.4:9866).
+2026-11-19 16:58:22,521 INFO BlockStateChange: BLOCK* processReport 0x67af56bc7ee0e6c: Processing first storage report for DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf from datanode b7115def-0c1b-44d0-8c77-015e83d677ff
+2026-11-19 16:58:22,522 INFO BlockStateChange: BLOCK* processReport 0x67af56bc7ee0e6c: from storage DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf node DatanodeRegistration(172.19.0.4:9866, datanodeUuid=b7115def-0c1b-44d0-8c77-015e83d677ff, infoPort=9864, infoSecurePort=0, ipcPort=9867, storageInfo=lv=-57;cid=CID-bdb7ecc5-603a-4200-8927-38e993fada13;nsid=98127226;c=1795107496859), blocks: 0, hasStaleStorage: false, processing time: 0 msecs, invalidatedBlocks: 0
+2026-11-19 16:58:38,044 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 16:58:38,045 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 17:00:06,459 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 17:00:06,460 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 17:01:18,059 INFO hdfs.StateChange: BLOCK* removeDeadDatanode: lost heartbeat from 172.19.0.4:9866, removeBlocksFromBlockMap true
+2026-11-19 17:01:18,061 INFO net.NetworkTopology: Removing a node: /default-rack/172.19.0.4:9866
+2026-11-19 17:01:22,734 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 17:01:22,734 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 17:02:03,493 INFO hdfs.StateChange: BLOCK* registerDatanode: from DatanodeRegistration(172.19.0.4:9866, datanodeUuid=b7115def-0c1b-44d0-8c77-015e83d677ff, infoPort=9864, infoSecurePort=0, ipcPort=9867, storageInfo=lv=-57;cid=CID-bdb7ecc5-603a-4200-8927-38e993fada13;nsid=98127226;c=1795107496859) storage b7115def-0c1b-44d0-8c77-015e83d677ff
+2026-11-19 17:02:03,493 INFO net.NetworkTopology: Removing a node: /default-rack/172.19.0.4:9866
+2026-11-19 17:02:03,519 INFO blockmanagement.BlockReportLeaseManager: Registered DN b7115def-0c1b-44d0-8c77-015e83d677ff (172.19.0.4:9866).
+2026-11-19 17:02:03,528 INFO BlockStateChange: BLOCK* processReport 0x1057d9f248a4405d: Processing first storage report for DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf from datanode b7115def-0c1b-44d0-8c77-015e83d677ff
+2026-11-19 17:02:03,528 INFO BlockStateChange: BLOCK* processReport 0x1057d9f248a4405d: from storage DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf node DatanodeRegistration(172.19.0.4:9866, datanodeUuid=b7115def-0c1b-44d0-8c77-015e83d677ff, infoPort=9864, infoSecurePort=0, ipcPort=9867, storageInfo=lv=-57;cid=CID-bdb7ecc5-603a-4200-8927-38e993fada13;nsid=98127226;c=1795107496859), blocks: 5, hasStaleStorage: false, processing time: 0 msecs, invalidatedBlocks: 0
+2026-11-19 17:02:13,079 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 17:02:13,079 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 17:02:16,992 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 17:02:16,992 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 17:02:18,180 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 17:02:18,180 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 17:02:19,362 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS
+2026-11-19 17:02:19,362 INFO Configuration.deprecation: No unit for dfs.heartbeat.interval(3) assuming SECONDS

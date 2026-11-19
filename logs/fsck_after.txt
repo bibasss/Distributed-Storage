@@ -1,0 +1,51 @@
+FSCK started by root (auth:SIMPLE) from /172.19.0.3 for path /user/student/data at Thu Nov 19 17:02:13 UTC 2026
+/user/student/data <dir>
+/user/student/data/sample_100m.bin 104857600 bytes, replicated: replication=2, 1 block(s):  OK
+0. BP-1362281112-172.19.0.3-1795107496859:blk_1073741836_1012 len=104857600 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+
+/user/student/data/sample_100m_32m-blocks.bin 104857600 bytes, replicated: replication=2, 4 block(s):  OK
+0. BP-1362281112-172.19.0.3-1795107496859:blk_1073741837_1013 len=33554432 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+1. BP-1362281112-172.19.0.3-1795107496859:blk_1073741838_1014 len=33554432 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+2. BP-1362281112-172.19.0.3-1795107496859:blk_1073741839_1015 len=33554432 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+3. BP-1362281112-172.19.0.3-1795107496859:blk_1073741840_1016 len=4194304 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+
+/user/student/data/written_while_degraded.bin 8388608 bytes, replicated: replication=2, 1 block(s):  OK
+0. BP-1362281112-172.19.0.3-1795107496859:blk_1073741841_1017 len=8388608 Live_repl=2  [DatanodeInfoWithStorage[172.19.0.2:9866,DS-ebb3ed0a-793b-4200-8818-12b33a12abd7,DISK], DatanodeInfoWithStorage[172.19.0.4:9866,DS-2c6f915e-f1aa-4d77-9c8c-ee3b67759edf,DISK]]
+
+
+Status: HEALTHY
+ Number of data-nodes:	2
+ Number of racks:		1
+ Total dirs:			1
+ Total symlinks:		0
+
+Replicated Blocks:
+ Total size:	218103808 B
+ Total files:	3
+ Total blocks (validated):	6 (avg. block size 36350634 B)
+ Minimally replicated blocks:	6 (100.0 %)
+ Over-replicated blocks:	0 (0.0 %)
+ Under-replicated blocks:	0 (0.0 %)
+ Mis-replicated blocks:		0 (0.0 %)
+ Default replication factor:	2
+ Average block replication:	2.0
+ Missing blocks:		0
+ Corrupt blocks:		0
+ Missing replicas:		0 (0.0 %)
+
+Erasure Coded Block Groups:
+ Total size:	0 B
+ Total files:	0
+ Total block groups (validated):	0
+ Minimally erasure-coded block groups:	0
+ Over-erasure-coded block groups:	0
+ Under-erasure-coded block groups:	0
+ Unsatisfactory placement block groups:	0
+ Average block group size:	0.0
+ Missing block groups:		0
+ Corrupt block groups:		0
+ Missing internal blocks:	0
+FSCK ended at Thu Nov 19 17:02:13 UTC 2026 in 1 milliseconds
+
+
+The filesystem under path '/user/student/data' is HEALTHY
