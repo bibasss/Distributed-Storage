@@ -1,0 +1,6 @@
+Machine: 12th Gen Intel(R) Core(TM) i7-12700, 10 logical CPUs, 17 GB RAM; all containers on one host
+OS: Ubuntu 22.04.5 LTS, Linux 6.8.0-1073-azure, x86_64
+Docker: 29.9.2, build a82e528, Compose 5.6.1
+HDFS: Hadoop 3.2.1 (bde2020/hadoop-*:2.0.0-hadoop3.2.1-java8), replication 2, block size 128 MB
+MinIO: RELEASE.2026-11-16T00-11-40Z (go1.27.4 linux/amd64) (cgr.dev/chainguard/minio:latest, image sha256:16b824a0016f)
+Python: 3.10.12 (host), boto3 1.44.6, pytest 9.2.0, playwright 1.65.2

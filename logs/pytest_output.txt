@@ -1,0 +1,22 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.2.0, pluggy-1.7.0 -- /home/duster/Desktop/New Folder 8/Distributed-Storage-Lab/.venv/bin/python
+rootdir: /home/duster/Desktop/New Folder 8/Distributed-Storage-Lab
+configfile: pytest.ini
+testpaths: tests
+collecting ... collected 13 items
+
+tests/test_hdfs.py::test_two_datanodes_live PASSED                       [  7%]
+tests/test_hdfs.py::test_file_is_split_into_blocks_with_two_replicas PASSED [ 15%]
+tests/test_hdfs.py::test_hdfs_read_returns_written_bytes PASSED          [ 23%]
+tests/test_storage.py::test_s3_bucket_existence PASSED                   [ 30%]
+tests/test_storage.py::test_s3_object_upload_and_read PASSED             [ 38%]
+tests/test_storage.py::test_upload_file_with_custom_metadata_and_head PASSED [ 46%]
+tests/test_storage.py::test_overwrite_replaces_data_and_metadata PASSED  [ 53%]
+tests/test_storage.py::test_large_file_multipart_upload_integrity PASSED [ 61%]
+tests/test_storage.py::test_bucket_integrity_listing_matches_objects PASSED [ 69%]
+tests/test_storage.py::test_object_persists_across_minio_restart PASSED  [ 76%]
+tests/test_storage.py::test_read_after_write_is_immediately_consistent PASSED [ 84%]
+tests/test_storage.py::test_flat_namespace_directories_are_key_prefixes PASSED [ 92%]
+tests/test_storage.py::test_missing_object_and_idempotent_delete PASSED  [100%]
+
+============================= 13 passed in 12.28s ==============================
